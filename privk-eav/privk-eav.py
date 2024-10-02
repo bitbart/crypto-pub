@@ -2,16 +2,16 @@
 
 import sys
 import logging
-
 from cipher import *
 
-from mallory6 import *
+# choose the adversary
+from mallory2 import *
 
 # Adv: mallory1
 # P = ShiftECB()
 
 # Adv: mallory2
-# P = Shift1Unbal()
+P = Shift1Unbal()
 
 # Adv: mallory7
 # P = ShiftLazyOTP(5)
@@ -20,10 +20,10 @@ from mallory6 import *
 # P = Vigenere2Unbal()
 
 # Adv: mallory5
-P = TwoTP(4)
+# P = TwoTP(4)
 
 # Adv: mallory6
-P = QuasiOTP(4)
+# P = QuasiOTP(4)
 
 # Adv = mallory4
 # P = OTPlastXor(3)

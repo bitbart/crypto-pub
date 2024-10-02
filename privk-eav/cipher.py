@@ -318,7 +318,15 @@ def print_usage():
     cipher scheme -dec keyfile y    decrypts ciphertext y with key
     cipher scheme -privk x0 x1      indistinguishability experiment on plaintexts x0,x1
     
-    where scheme in [Uncipher,ShiftECB,ShiftLazyOTP,Vigenere2Unbal,OTP,TwoTP,OTPlastXor,QuasiOTP]
+    where scheme in:
+	Uncipher
+	ShiftECB
+	ShiftLazyOTP
+	Vigenere2Unbal
+	OTP
+	TwoTP
+	OTPlastXor
+	QuasiOTP
     """)
 
 def get_n(args,op):
