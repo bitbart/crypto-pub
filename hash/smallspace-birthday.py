@@ -50,7 +50,6 @@ def birthday_attack(bit_length, max_attempts):
     if len(x0) % 2 != 0:
         x0 = '0' + x0
 
-    x0 = "84"
     log.info(f"Initial string: {x0}")
 
     x = x0
