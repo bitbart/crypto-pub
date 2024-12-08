@@ -3,6 +3,7 @@
 import hashlib
 import random
 import argparse
+import logging as log
 
 def truncated_hash(input_hex, bit_length):
     """
@@ -36,27 +37,30 @@ def birthday_attack(bit_length, max_attempts):
     Args:
         bit_length (int): Bit length of the truncated hash.
         max_attempts (int): Maximum number of attempts to find a collision.
-        input_length (int): Length of random input strings.
         
     Returns:
         tuple: A collision pair (x, x') if found, otherwise None.
     """
 
-    # Generate a random input of specified length
+    # Generate a random input of specified length (for testing with bit_length=8, use x0 = 84)
     num_hex_digits = bit_length // 4 if bit_length % 4 == 0 else 1 + bit_length // 4
-    print(f"Number of hexadecimal digits: {num_hex_digits}.")
+    log.info(f"Number of hexadecimal digits: {num_hex_digits}.")
     x0 = ''.join(random.choices('0123456789abcdef', k=num_hex_digits))
     # Ensure the length is even by padding with '0' if necessary
     if len(x0) % 2 != 0:
         x0 = '0' + x0
 
-    print(f"Initial string: {x0}")
+    x0 = "84"
+    log.info(f"Initial string: {x0}")
+
     x = x0
     z = x0
 
-    for i in range(max_attempts):     
+    for i in range(max_attempts):
         x = truncated_hash(x, bit_length)
         z = truncated_hash(truncated_hash(z, bit_length), bit_length)
+
+        log.info(f"Attempt {i+1}: x = {x}, z = {z}")
 
         if x == z:
             break
@@ -64,7 +68,7 @@ def birthday_attack(bit_length, max_attempts):
     if i == max_attempts-1:
         return None
 
-    print(f"x = z found after {i} attempts (out of {max_attempts}).")
+    log.info(f"x = z found after {i} attempts (out of {max_attempts}).")
 
     z = x
     x = x0
@@ -84,15 +88,21 @@ def birthday_attack(bit_length, max_attempts):
 if __name__ == "__main__":
     # Command-line argument parsing
     parser = argparse.ArgumentParser(description="Birthday attack on a hash function.")
-    parser.add_argument("-b", "--bit-length",   type=int, default=40,      help="Number of bits for the truncated hash (default: 24).")
-    parser.add_argument("-a", "--attempts",     type=int, default=1200000, help="Number of attempts to find a collision (default: 100000).")
-    
+    parser.add_argument("-b", "--bit-length", type=int, default=8,  help="Number of bits for the truncated hash (default: 24).")
+    parser.add_argument("-a", "--attempts",   type=int, default=20, help="Number of attempts to find a collision (default: 100000).")
+    parser.add_argument("-v", "--verbose",    action='store_true',  help='Verbose True/False')
+
     args = parser.parse_args()
     bit_length = args.bit_length
     max_attempts = args.attempts
-    
-    print(f"Attempting a birthday attack on a {bit_length}-bit hash...")
-    print(f"Using {max_attempts} attempts with random strings.")
+
+    if args.verbose:
+        log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
+    else:
+        log.basicConfig(format="%(levelname)s: %(message)s")
+
+    log.info(f"Attempting a birthday attack on a {bit_length}-bit hash...")
+    log.info(f"Using {max_attempts} attempts with random strings.")
 
     collision = birthday_attack(bit_length, max_attempts)
     if collision:
