@@ -15,3 +15,8 @@
   - Adv for OTP with computed last bit: [mallory4.py](privk-eav/mallory4.py)
   - Adv for two-time pad: [mallory5.py](privk-eav/mallory5.py)
   - Adv for quasi-OTP: [mallory6.py](privk-eav/mallory6.py)
+
+## Hash functions
+
+- [Big-space birthday attack](hash/birthday.py)
+- [Small-space birthday attack](hash/smallspace-birthday.py)
